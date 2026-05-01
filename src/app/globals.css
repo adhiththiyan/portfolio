@@ -1,0 +1,117 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+@config "../../tailwind.config.js";
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: 220 33% 4%;
+    --foreground: 220 25% 90%;
+
+    --primary: 225 4% 79%;
+    --primary-foreground: 220 33% 4%;
+
+    --secondary: 220 15% 10%;
+    --secondary-foreground: 220 25% 90%;
+
+    --accent: 220 4% 79%;
+    --accent-foreground: 210 5% 20%;
+
+    --muted: 220 20% 12%;
+    --muted-foreground: 225 2% 78%;
+
+    --card: 220 25% 7%;
+    --card-foreground: 220 25% 90%;
+
+    --popover: 220 25% 7%;
+    --popover-foreground: 220 25% 90%;
+
+    --border: 220 15% 14%;
+    --input: 220 15% 14%;
+    --ring: 225 4% 79%;
+
+    --destructive: 3 100% 85%;
+    --destructive-foreground: 3 100% 21%;
+
+    --radius: 0.5rem;
+  }
+}
+
+.dark {
+  --background: 220 33% 4%;
+  --foreground: 220 25% 90%;
+
+  --primary: 225 4% 79%;
+  --primary-foreground: 220 33% 4%;
+
+  --secondary: 220 15% 10%;
+  --secondary-foreground: 220 25% 90%;
+
+  --accent: 220 4% 79%;
+  --accent-foreground: 210 5% 20%;
+
+  --muted: 220 20% 12%;
+  --muted-foreground: 225 2% 78%;
+
+  --card: 220 25% 7%;
+  --card-foreground: 220 25% 90%;
+
+  --popover: 220 25% 7%;
+  --popover-foreground: 220 25% 90%;
+
+  --border: 220 15% 14%;
+  --input: 220 15% 14%;
+  --ring: 225 4% 79%;
+
+  --destructive: 3 100% 85%;
+  --destructive-foreground: 3 100% 21%;
+
+  --radius: 0.5rem;
+}
+
+body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: Arial, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground text-sm;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+.bg-grid {
+  background-size: 50px 50px;
+  background-image:
+    linear-gradient(to right, hsl(var(--border)) 1px, transparent 1px),
+    linear-gradient(to bottom, hsl(var(--border)) 1px, transparent 1px);
+  mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(
+    circle at center,
+    black 40%,
+    transparent 100%
+  );
+}
+
+/* Abstract Glow */
+.glow-effect {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(
+    circle,
+    rgba(197, 198, 203, 0.15) 0%,
+    rgba(13, 20, 29, 0) 70%
+  );
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+}
