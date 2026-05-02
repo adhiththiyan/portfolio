@@ -5,6 +5,10 @@
 @custom-variant dark (&:is(.dark *));
 @config "../../tailwind.config.js";
 
+@theme {
+  --font-heading: var(--font-heading);
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: 220 33% 4%;
@@ -28,7 +32,7 @@
     --popover: 220 25% 7%;
     --popover-foreground: 220 25% 90%;
 
-    --border: 220 15% 14%;
+    --border: 210 5% 12%;
     --input: 220 15% 14%;
     --ring: 225 4% 79%;
 
@@ -61,7 +65,7 @@
   --popover: 220 25% 7%;
   --popover-foreground: 220 25% 90%;
 
-  --border: 220 15% 14%;
+  --border: 210 5% 12%;
   --input: 220 15% 14%;
   --ring: 225 4% 79%;
 
@@ -74,7 +78,7 @@
 body {
   background: hsl(var(--background));
   color: hsl(var(--foreground));
-  font-family: Arial, sans-serif;
+  font-family: var(--font-geist-sans), sans-serif;
 }
 
 @layer base {
@@ -101,7 +105,6 @@ body {
 
 /* Abstract Glow */
 .glow-effect {
-  position: absolute;
   width: 600px;
   height: 600px;
   background: radial-gradient(
@@ -109,9 +112,24 @@ body {
     rgba(197, 198, 203, 0.15) 0%,
     rgba(13, 20, 29, 0) 70%
   );
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   pointer-events: none;
   z-index: 0;
+}
+
+/* Glow effect positioned at the bottom of sections */
+.glow-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 40%);
+  width: 1000px;
+  height: 500px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(197, 198, 203, 0.15) 0%,
+    rgba(197, 198, 203, 0) 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(100px);
 }

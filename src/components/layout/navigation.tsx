@@ -18,10 +18,12 @@ export const Navigation = () => {
     }, []);
 
     const navLinks = [
-        { name: 'Features', href: '#features' },
-        { name: 'Pricing', href: '#pricing' },
+        { name: 'Home', href: '#features' },
+        { name: 'Projects', href: '#pricing' },
+        { name: 'Tool Stack', href: '#pricing' },
         { name: 'About', href: '#about' },
         { name: 'Contact', href: '#contact' },
+        { name: 'Resume', href: '#contact' },
     ];
 
     return (
@@ -49,7 +51,7 @@ export const Navigation = () => {
                         <motion.ul
                             initial={{ opacity: 0, y: -10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.5 }}
+                            transition={{ delay: 0.2 }}
                             className="flex space-x-8 border rounded-full border-border bg-background/50 backdrop-blur-3xl py-2 px-8"
                         >
                             {navLinks.map((link) => (
@@ -67,14 +69,17 @@ export const Navigation = () => {
                         </motion.ul>
                     </nav>
 
-                    <div className="hidden md:block">
+                    <motion.div
+                    initial={{opacity: 0, x: 20}}
+                    animate={{opacity: 1, x: 0}}
+                     className="hidden md:block">
                         <Button
                             variant="default"
                             size="lg"
                             className="py-6 px-8 text-base">
                             Get Started
                         </Button>
-                    </div>
+                    </motion.div>
 
                     {/* Mobile Menu Button */}
                     <div className="md:hidden">
