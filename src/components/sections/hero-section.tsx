@@ -179,8 +179,13 @@ export const HeroSection = ({ id }: { id?: string }) => {
                         repeat: Infinity,
                         ease: "easeInOut"
                     }}
+                    onClick={() => {
+                        const hero = document.getElementById(id ?? "home");
+                        const next = hero?.nextElementSibling as HTMLElement | null;
+                        next?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }}
                 >
-                    <ChevronDown className="w-10 h-10 text-accent-foreground" /> 
+                    <ChevronDown className="w-10 h-10 text-accent-foreground" />
                 </motion.button>
             </motion.div>
           </div>

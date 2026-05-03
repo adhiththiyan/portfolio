@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { MenuIcon, XIcon } from "lucide-react";
 import React from "react";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
 
 const MotionButton = motion.create ? motion.create(Button) : motion(Button);
 
@@ -122,8 +123,9 @@ export const Navigation = ({ navLinks }: { navLinks: NavLink[] }) => {
                     <motion.div
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        className="hidden md:block"
+                        className="hidden md:flex items-center gap-3"
                     >
+                        <ThemeToggle />
                         <Button
                             variant="default"
                             size="lg"
@@ -136,8 +138,9 @@ export const Navigation = ({ navLinks }: { navLinks: NavLink[] }) => {
                         </Button>
                     </motion.div>
 
-                    {/* Mobile Menu Button */}
-                    <div className="md:hidden">
+                    {/* Mobile: theme toggle + hamburger */}
+                    <div className="md:hidden flex items-center gap-2">
+                        <ThemeToggle />
                         <button
                             onClick={() => setIsOpen(!isOpen)}
                             className="text-muted-foreground hover:text-foreground p-2"
