@@ -68,9 +68,9 @@ export const Navigation = ({ navLinks }: { navLinks: NavLink[] }) => {
                             className="text-xl font-bold tracking-tight text-primary flex items-center gap-2"
                         >
                             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground">
-                                <span className="font-serif text-lg">N</span>
+                                <span className="font-serif text-sm font-semibold">AS</span>
                             </div>
-                            NexusUI
+                            Adhithiyan S
                         </motion.div>
                     </div>
 

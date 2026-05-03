@@ -7,15 +7,15 @@ import { Code2, Layers, Rocket, Users } from "lucide-react";
 const aboutContent = {
   badge: "About Me",
   heading: "Turning Ideas Into Working Software",
-  bio: "I'm a Software Engineer with 2+ years of hands-on experience building full-stack web applications. I'm passionate about creating fast, clean, and accessible digital experiences that solve real-world problems.",
+  bio: "I'm Adhithiyan S, a Software Engineer with 2+ years building responsive, user-centric web applications using React.js and Next.js, with foundational knowledge of Angular.",
   bioSecondary:
-    "When I'm not coding, I'm exploring new frameworks, contributing to open source, or experimenting with UI design. I believe the best software is both functional and beautiful.",
+    "I'm fluent in HTML5, CSS3, and JavaScript (ES6+), work daily with Tailwind CSS, Radix UI, Material UI, and Hero UI, and partner closely with FastAPI and Node.js backends. I use Jira and Linear for agile delivery and focus on performance and UX across browsers and devices.",
 };
 
 const stats = [
   { value: "2+", label: "Years Experience" },
-  { value: "15+", label: "Projects Shipped" },
-  { value: "5+", label: "Happy Clients" },
+  { value: "10+", label: "Major Deliverables" },
+  { value: "4", label: "Teams & Clients" },
   { value: "∞", label: "Lines of Code" },
 ];
 
@@ -24,13 +24,13 @@ const highlights = [
     icon: <Code2 size={20} />,
     title: "Clean Code First",
     description:
-      "I write code that's readable, maintainable, and scalable — not just code that works.",
+      "Maintainable components, clear patterns, and structured front-end architecture — not just code that works once.",
   },
   {
     icon: <Layers size={20} />,
-    title: "Full-Stack Mindset",
+    title: "UI Meets APIs",
     description:
-      "Comfortable across the entire stack, from designing APIs to building pixel-perfect UIs.",
+      "Comfortable owning the client layer end-to-end and integrating REST APIs with FastAPI or Node.js backends.",
   },
   {
     icon: <Rocket size={20} />,
