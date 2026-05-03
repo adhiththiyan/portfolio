@@ -5,41 +5,11 @@
 @custom-variant dark (&:is(.dark *));
 @config "../../tailwind.config.js";
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: 220 33% 4%;
-    --foreground: 220 25% 90%;
-
-    --primary: 225 4% 79%;
-    --primary-foreground: 220 33% 4%;
-
-    --secondary: 220 15% 10%;
-    --secondary-foreground: 220 25% 90%;
-
-    --accent: 220 4% 79%;
-    --accent-foreground: 210 5% 20%;
-
-    --muted: 220 20% 12%;
-    --muted-foreground: 225 2% 78%;
-
-    --card: 220 25% 7%;
-    --card-foreground: 220 25% 90%;
-
-    --popover: 220 25% 7%;
-    --popover-foreground: 220 25% 90%;
-
-    --border: 220 15% 14%;
-    --input: 220 15% 14%;
-    --ring: 225 4% 79%;
-
-    --destructive: 3 100% 85%;
-    --destructive-foreground: 3 100% 21%;
-
-    --radius: 0.5rem;
-  }
+@theme {
+  --font-heading: var(--font-heading);
 }
 
-.dark {
+:root {
   --background: 220 33% 4%;
   --foreground: 220 25% 90%;
 
@@ -61,7 +31,7 @@
   --popover: 220 25% 7%;
   --popover-foreground: 220 25% 90%;
 
-  --border: 220 15% 14%;
+  --border: 210 5% 12%;
   --input: 220 15% 14%;
   --ring: 225 4% 79%;
 
@@ -71,10 +41,61 @@
   --radius: 0.5rem;
 }
 
+/* Light theme — same hue family as dark (cool slate ~220°) for one cohesive brand feel */
+.light {
+  /* Closer to card — less jump than stark white-gray vs bright cards */
+  --background: 220 14% 97%;
+  --foreground: 224 28% 13%;
+
+  /* Deep slate buttons / focus — mirrors dark theme’s restrained gray primary */
+  --primary: 224 24% 13%;
+  --primary-foreground: 210 40% 98%;
+
+  --secondary: 220 16% 92%;
+  --secondary-foreground: 224 26% 14%;
+
+  --accent: 220 18% 91%;
+  --accent-foreground: 224 26% 14%;
+
+  --muted: 220 16% 93%;
+  --muted-foreground: 220 11% 39%;
+
+  --card: 220 18% 99%;
+  --card-foreground: 224 28% 13%;
+
+  --popover: 220 18% 99%;
+  --popover-foreground: 224 28% 13%;
+
+  --border: 220 13% 86%;
+  --input: 220 14% 89%;
+  --ring: 224 24% 13%;
+
+  --destructive: 0 72% 46%;
+  --destructive-foreground: 0 0% 98%;
+
+  --radius: 0.5rem;
+}
+
+.light .glow-bottom {
+  background: radial-gradient(
+    ellipse at center,
+    hsl(220 18% 45% / 0.11) 0%,
+    hsl(220 18% 45% / 0) 72%
+  );
+}
+
+.light .glow-effect {
+  background: radial-gradient(
+    circle,
+    hsl(220 18% 45% / 0.1) 0%,
+    hsl(220 22% 99% / 0) 68%
+  );
+}
+
 body {
   background: hsl(var(--background));
   color: hsl(var(--foreground));
-  font-family: Arial, sans-serif;
+  font-family: var(--font-geist-sans), sans-serif;
 }
 
 @layer base {
@@ -101,7 +122,6 @@ body {
 
 /* Abstract Glow */
 .glow-effect {
-  position: absolute;
   width: 600px;
   height: 600px;
   background: radial-gradient(
@@ -109,9 +129,24 @@ body {
     rgba(197, 198, 203, 0.15) 0%,
     rgba(13, 20, 29, 0) 70%
   );
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   pointer-events: none;
   z-index: 0;
+}
+
+/* Glow effect positioned at the bottom of sections */
+.glow-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 40%);
+  width: 1000px;
+  height: 500px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(197, 198, 203, 0.15) 0%,
+    rgba(197, 198, 203, 0) 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(100px);
 }

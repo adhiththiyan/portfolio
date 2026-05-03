@@ -15,5 +15,7 @@
     "className",
     "ngClass",
     ".*Class"
-  ]
+  ],
+  "tailwindCSS.lint.suggestCanonicalClasses": "ignore"
 }
+
