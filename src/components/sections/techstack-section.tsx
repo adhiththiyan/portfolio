@@ -1,113 +1,179 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
+import {
+  Boxes,
+  Database,
+  Layers2,
+  Server,
+  type LucideIcon,
+} from "lucide-react";
 import { SectionHeader } from "@/components/ui";
+import {
+  AccentTag,
+  chipRowVariants,
+} from "@/components/sections/accent-tag";
+import { SECTION_ACCENTS, type AccentKey } from "@/components/sections/section-accents";
 
-const tools = [
+const tools: {
+  category: string;
+  accent: AccentKey;
+  blurb: string;
+  icon: LucideIcon;
+  items: { name: string }[];
+}[] = [
   {
     category: "Frontend",
-    color: "from-blue-500/20 to-cyan-500/10",
-    accent: "blue-400",
+    accent: "blue",
+    blurb: "Interfaces, motion, and design systems.",
+    icon: Layers2,
     items: [
-      { name: "React", icon: "⚛️" },
-      { name: "Next.js", icon: "▲" },
-      { name: "TypeScript", icon: "𝙏𝙎" },
-      { name: "Tailwind CSS", icon: "🎨" },
-      { name: "Framer Motion", icon: "◐" },
+      { name: "React" },
+      { name: "Next.js" },
+      { name: "TypeScript" },
+      { name: "Tailwind CSS" },
+      { name: "Framer Motion" },
     ],
   },
   {
     category: "Backend",
-    color: "from-emerald-500/20 to-green-500/10",
-    accent: "emerald-400",
+    accent: "emerald",
+    blurb: "Services, APIs, and resilient server logic.",
+    icon: Server,
     items: [
-      { name: "Node.js", icon: "⬡" },
-      { name: "Express", icon: "⚡" },
-      { name: "REST APIs", icon: "🔗" },
-      { name: "GraphQL", icon: "◈" },
-      { name: "WebSockets", icon: "⟳" },
+      { name: "Node.js" },
+      { name: "Express" },
+      { name: "REST APIs" },
+      { name: "GraphQL" },
+      { name: "WebSockets" },
     ],
   },
   {
     category: "Database",
-    color: "from-orange-500/20 to-amber-500/10",
-    accent: "orange-400",
+    accent: "orange",
+    blurb: "Models, persistence, and fast data access.",
+    icon: Database,
     items: [
-      { name: "PostgreSQL", icon: "🐘" },
-      { name: "MongoDB", icon: "🍃" },
-      { name: "Prisma", icon: "◆" },
-      { name: "Redis", icon: "🔴" },
-      { name: "Supabase", icon: "⚡" },
+      { name: "PostgreSQL" },
+      { name: "MongoDB" },
+      { name: "Prisma" },
+      { name: "Redis" },
+      { name: "Supabase" },
     ],
   },
   {
     category: "DevOps & Tools",
-    color: "from-purple-500/20 to-violet-500/10",
-    accent: "purple-400",
+    accent: "purple",
+    blurb: "Shipping, environments, and automation.",
+    icon: Boxes,
     items: [
-      { name: "Git & GitHub", icon: "🐙" },
-      { name: "Docker", icon: "🐳" },
-      { name: "Vercel", icon: "▲" },
-      { name: "Linux", icon: "🐧" },
-      { name: "CI/CD", icon: "♾️" },
+      { name: "Git & GitHub" },
+      { name: "Docker" },
+      { name: "Vercel" },
+      { name: "Linux" },
+      { name: "CI/CD" },
     ],
   },
 ];
 
-const accentBorderMap: Record<string, string> = {
-  "blue-400": "border-blue-400/20 hover:border-blue-400/40",
-  "emerald-400": "border-emerald-400/20 hover:border-emerald-400/40",
-  "orange-400": "border-orange-400/20 hover:border-orange-400/40",
-  "purple-400": "border-purple-400/20 hover:border-purple-400/40",
-};
+const ease = [0.25, 0.1, 0.25, 1] as const;
 
-const accentTextMap: Record<string, string> = {
-  "blue-400": "text-blue-400",
-  "emerald-400": "text-emerald-400",
-  "orange-400": "text-orange-400",
-  "purple-400": "text-purple-400",
-};
-
-const accentGlowMap: Record<string, string> = {
-  "blue-400": "bg-blue-400/10",
-  "emerald-400": "bg-emerald-400/10",
-  "orange-400": "bg-orange-400/10",
-  "purple-400": "bg-purple-400/10",
-};
-
-const containerVariants = {
+const gridVariants: Variants = {
   hidden: {},
   visible: {
-    transition: {
-      staggerChildren: 0.12,
-    },
+    transition: { staggerChildren: 0.12 },
   },
 };
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 40 },
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 36 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.55, ease: [0.25, 0.1, 0.25, 1] as const },
+    transition: { duration: 0.55, ease },
   },
 };
 
-const chipVariants = {
-  hidden: { opacity: 0, scale: 0.85 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1] as const },
-  },
-};
+function TechCategoryCard({
+  category,
+  accent,
+  blurb,
+  icon: Icon,
+  items,
+  index,
+}: {
+  category: string;
+  accent: AccentKey;
+  blurb: string;
+  icon: LucideIcon;
+  items: { name: string }[];
+  index: number;
+}) {
+  const a = SECTION_ACCENTS[accent];
+  const n = String(index + 1).padStart(2, "0");
 
-export function TechStackSection() {
   return (
-    <section className="py-24 md:py-32 relative bg-background border-t border-border overflow-hidden">
-      <div className="glow-bottom" />
+    <motion.div
+      variants={cardVariants}
+      className="group/card relative flex flex-col overflow-hidden rounded-2xl border border-border/80 bg-card/35 backdrop-blur-md transition-all duration-500 hover:border-primary/20 hover:shadow-[0_24px_48px_-28px_rgba(0,0,0,0.85)] hover:shadow-primary/[0.03]"
+    >
+      <div
+        className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${a.mesh} opacity-90 transition-opacity duration-500 group-hover/card:opacity-100`}
+      />
+      <div
+        className={`pointer-events-none absolute -right-8 -top-8 h-44 w-44 rounded-full ${a.glow} blur-[72px] opacity-70 transition-opacity duration-500 group-hover/card:opacity-100`}
+      />
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-border/60 to-transparent"
+        aria-hidden
+      />
 
-      <div className="max-w-7xl mx-auto px-4 relative z-10">
+      <div className="relative z-10 flex flex-1 flex-col p-7 lg:p-8">
+        <div className="mb-6 flex items-start justify-between gap-4">
+          <div
+            className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border ${a.iconRing}`}
+          >
+            <Icon className="h-5 w-5" strokeWidth={1.65} aria-hidden />
+          </div>
+          <span className="font-heading text-3xl font-semibold tabular-nums text-muted-foreground/20 transition-colors duration-300 select-none group-hover/card:text-muted-foreground/35">
+            {n}
+          </span>
+        </div>
+
+        <div className="mb-5 space-y-2">
+          <p className={`text-[11px] font-bold uppercase tracking-[0.22em] ${a.label}`}>
+            {category}
+          </p>
+          <div className={`h-px w-12 rounded-full bg-gradient-to-r ${a.bar}`} aria-hidden />
+          <h3 className="font-heading text-xl font-semibold tracking-tight text-foreground">
+            {category}
+          </h3>
+          <p className="text-sm leading-relaxed text-muted-foreground/75">{blurb}</p>
+        </div>
+
+        <motion.div
+          variants={chipRowVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="relative mt-auto flex flex-wrap gap-2"
+        >
+          {items.map((item) => (
+            <AccentTag key={item.name} name={item.name} accent={accent} />
+          ))}
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+}
+
+export function TechStackSection({ id }: { id?: string }) {
+  return (
+    <section
+      id={id}
+      className="relative scroll-mt-24 overflow-hidden border-t border-border bg-background py-24 md:py-32"
+    >
+      <div className="relative z-10 mx-auto max-w-7xl px-4">
         <SectionHeader
           badge="My Arsenal"
           title="Tools & Technologies I Work With"
@@ -115,51 +181,22 @@ export function TechStackSection() {
         />
 
         <motion.div
-          variants={containerVariants}
+          variants={gridVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-7"
         >
-          {tools.map((group) => (
-            <motion.div
+          {tools.map((group, index) => (
+            <TechCategoryCard
               key={group.category}
-              variants={cardVariants}
-              className={`relative border ${accentBorderMap[group.accent]} bg-card/40 backdrop-blur-md rounded-2xl p-7 transition-all duration-300 overflow-hidden group`}
-            >
-              {/* Gradient Glow background */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${group.color} opacity-60 pointer-events-none`} />
-              {/* Top-right glow accent */}
-              <div className={`absolute -top-10 -right-10 w-36 h-36 ${accentGlowMap[group.accent]} rounded-full blur-[60px] pointer-events-none`} />
-
-              {/* Category Label */}
-              <div className="relative z-10 mb-5">
-                <span className={`text-xs font-bold tracking-widest uppercase ${accentTextMap[group.accent]}`}>
-                  {group.category}
-                </span>
-              </div>
-
-              {/* Tech Chips */}
-              <motion.div
-                variants={containerVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                className="relative z-10 flex flex-wrap gap-2.5"
-              >
-                {group.items.map((item) => (
-                  <motion.div
-                    key={item.name}
-                    variants={chipVariants}
-                    whileHover={{ y: -2, scale: 1.04 }}
-                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-background/50 border border-border/60 text-sm font-medium text-foreground hover:bg-background/80 hover:border-border transition-all duration-200 cursor-default"
-                  >
-                    <span className="text-base leading-none">{item.icon}</span>
-                    <span>{item.name}</span>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </motion.div>
+              category={group.category}
+              accent={group.accent}
+              blurb={group.blurb}
+              icon={group.icon}
+              items={group.items}
+              index={index}
+            />
           ))}
         </motion.div>
       </div>

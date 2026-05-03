@@ -41,9 +41,9 @@ const contactLinks = [
   },
 ];
 
-export function ContactSection() {
+export function ContactSection({ id }: { id?: string }) {
   return (
-    <section className="py-24 md:py-32 relative bg-background border-t border-border overflow-hidden">
+    <section id={id} className="py-24 md:py-32 relative bg-background border-t border-border overflow-hidden">
       <div className="glow-bottom" />
 
       <div className="max-w-7xl mx-auto px-4 relative z-10">

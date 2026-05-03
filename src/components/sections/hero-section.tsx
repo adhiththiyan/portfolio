@@ -13,7 +13,7 @@ const heroContent = {
   ctaText: "Contact Me"
 };
 
-export const HeroSection = () => {
+export const HeroSection = ({ id }: { id?: string }) => {
   const [displayedText, setDisplayedText] = useState("");
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export const HeroSection = () => {
 
 
   return (
-    <section className="min-h-screen relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+    <section id={id} className="min-h-screen relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
       <video
         autoPlay
         muted
