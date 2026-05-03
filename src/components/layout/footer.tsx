@@ -58,10 +58,10 @@ export function Footer() {
             className="space-y-3 max-w-xs"
           >
             <p className="text-xl font-heading font-semibold text-transparent bg-clip-text bg-gradient-to-r from-primary to-muted-foreground/60">
-              Adhiththiyan
+              Adhithiyan S
             </p>
             <p className="text-sm text-muted-foreground/70 leading-relaxed">
-              Software Engineer focused on building fast, beautiful, and production-ready web applications.
+              Software Engineer building responsive web apps with React.js and Next.js — auth, RBAC, real-time data, and thoughtful UI.
             </p>
           </motion.div>
 
@@ -111,7 +111,7 @@ export function Footer() {
 
         {/* Divider */}
         <div className="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted-foreground/60">
-          <p>© {new Date().getFullYear()} Adhiththiyan. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Adhithiyan S. All rights reserved.</p>
           <div className="flex items-center gap-1.5">
             <span>Built with</span>
             <a

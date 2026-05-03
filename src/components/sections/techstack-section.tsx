@@ -3,7 +3,6 @@
 import { motion, type Variants } from "framer-motion";
 import {
   Boxes,
-  Database,
   Layers2,
   Server,
   type LucideIcon,
@@ -23,55 +22,59 @@ const tools: {
   items: { name: string }[];
 }[] = [
   {
-    category: "Frontend",
+    category: "Languages",
     accent: "blue",
-    blurb: "Interfaces, motion, and design systems.",
+    blurb: "Core web standards and typed JavaScript.",
     icon: Layers2,
     items: [
-      { name: "React" },
-      { name: "Next.js" },
+      { name: "HTML5" },
+      { name: "CSS3" },
+      { name: "JavaScript (ES6+)" },
       { name: "TypeScript" },
-      { name: "Tailwind CSS" },
-      { name: "Framer Motion" },
     ],
   },
   {
-    category: "Backend",
+    category: "Frameworks & UI",
     accent: "emerald",
-    blurb: "Services, APIs, and resilient server logic.",
+    blurb: "Apps, components, and design systems.",
+    icon: Layers2,
+    items: [
+      { name: "React.js" },
+      { name: "Next.js" },
+      { name: "Angular" },
+      { name: "Tailwind CSS" },
+      { name: "Bootstrap" },
+      { name: "Radix UI" },
+      { name: "Material UI" },
+      { name: "Hero UI" },
+    ],
+  },
+  {
+    category: "Backend & APIs",
+    accent: "orange",
+    blurb: "Client–server apps and integrations.",
     icon: Server,
     items: [
+      { name: "FastAPI" },
       { name: "Node.js" },
-      { name: "Express" },
       { name: "REST APIs" },
-      { name: "GraphQL" },
-      { name: "WebSockets" },
+      { name: "Azure AD / OAuth" },
+      { name: "Third-party APIs" },
     ],
   },
   {
-    category: "Database",
-    accent: "orange",
-    blurb: "Models, persistence, and fast data access.",
-    icon: Database,
-    items: [
-      { name: "PostgreSQL" },
-      { name: "MongoDB" },
-      { name: "Prisma" },
-      { name: "Redis" },
-      { name: "Supabase" },
-    ],
-  },
-  {
-    category: "DevOps & Tools",
+    category: "Tools & Delivery",
     accent: "purple",
-    blurb: "Shipping, environments, and automation.",
+    blurb: "IDEs, collaboration, and version control.",
     icon: Boxes,
     items: [
-      { name: "Git & GitHub" },
-      { name: "Docker" },
-      { name: "Vercel" },
-      { name: "Linux" },
-      { name: "CI/CD" },
+      { name: "VS Code" },
+      { name: "Git" },
+      { name: "GitHub" },
+      { name: "Bitbucket" },
+      { name: "Postman" },
+      { name: "Jira" },
+      { name: "Linear" },
     ],
   },
 ];
@@ -135,7 +138,7 @@ function TechCategoryCard({
           >
             <Icon className="h-5 w-5" strokeWidth={1.65} aria-hidden />
           </div>
-          <span className="font-heading text-3xl font-semibold tabular-nums text-muted-foreground/20 transition-colors duration-300 select-none group-hover/card:text-muted-foreground/35">
+          <span className="font-heading text-3xl font-semibold tabular-nums text-muted-foreground/45 transition-colors duration-300 select-none group-hover/card:text-muted-foreground/70 dark:text-muted-foreground/20 dark:group-hover/card:text-muted-foreground/35">
             {n}
           </span>
         </div>
@@ -148,7 +151,7 @@ function TechCategoryCard({
           <h3 className="font-heading text-xl font-semibold tracking-tight text-foreground">
             {category}
           </h3>
-          <p className="text-sm leading-relaxed text-muted-foreground/75">{blurb}</p>
+          <p className="text-sm leading-relaxed text-muted-foreground">{blurb}</p>
         </div>
 
         <motion.div
@@ -173,11 +176,12 @@ export function TechStackSection({ id }: { id?: string }) {
       id={id}
       className="relative scroll-mt-24 overflow-hidden border-t border-border bg-background py-24 md:py-32"
     >
+      <div className="glow-bottom" />
       <div className="relative z-10 mx-auto max-w-7xl px-4">
         <SectionHeader
           badge="My Arsenal"
           title="Tools & Technologies I Work With"
-          description="A curated stack of tools I use day-to-day to build production-grade, scalable software applications."
+          description="Languages, UI frameworks, backend collaboration, and delivery tools I use to ship responsive, maintainable web applications."
         />
 
         <motion.div

@@ -5,7 +5,7 @@ import {
   ArrowUpRight,
   LayoutDashboard,
   LineChart,
-  Network,
+  Truck,
   type LucideIcon,
 } from "lucide-react";
 import { SectionHeader } from "@/components/ui";
@@ -24,31 +24,31 @@ export const projects: {
   tags: string[];
 }[] = [
   {
-    category: "Platform",
-    title: "Seamless Integration",
+    category: "FinTech · Transient AI",
+    title: "Live Markets & Secure Access",
     description:
-      "Connect tools, teams, and workflows with intelligent automation and dependable glue between services.",
+      "Interactive React.js and Next.js UIs with Azure AD login, RBAC, and real-time stock data from third-party APIs — integrated with FastAPI backends and shipped with Git and Linear.",
     accent: "blue",
-    icon: Network,
-    tags: ["Automation", "APIs", "Integrations"],
+    icon: LineChart,
+    tags: ["React", "Next.js", "Azure AD", "RBAC", "FastAPI"],
   },
   {
-    category: "Product",
-    title: "DevFlow Dashboard",
+    category: "Services · Stelvio",
+    title: "Service Platform & Admin",
     description:
-      "Real-time operational visibility with secure, token-aware workflows and a focused operator UI.",
+      "Built a Next.js service marketplace from the ground up — routing, state, reusable components, and an admin dashboard for bookings, customers, and live service configuration with FastAPI APIs.",
     accent: "emerald",
     icon: LayoutDashboard,
-    tags: ["Next.js", "Auth", "Realtime"],
+    tags: ["Next.js", "Admin UI", "REST", "Bitbucket"],
   },
   {
-    category: "Analytics",
-    title: "Metrics Engine",
+    category: "Logistics · Empty Truck",
+    title: "RBAC Dashboards & Live Tracking",
     description:
-      "Dynamic reporting across the stack — from ingestion to charts — without sacrificing clarity at scale.",
+      "Role-based Admin and Super Admin dashboards with dynamic routing, real-time order data, and Mapbox-powered tracking maps — responsive UI, Git workflows, and Jira-backed agile delivery.",
     accent: "purple",
-    icon: LineChart,
-    tags: ["Observability", "Charts", "Pipelines"],
+    icon: Truck,
+    tags: ["Next.js", "React", "Mapbox", "Jira"],
   },
 ];
 
@@ -114,7 +114,7 @@ function ProjectCard({
             >
               <Icon className="h-5 w-5" strokeWidth={1.65} aria-hidden />
             </div>
-            <span className="font-heading text-3xl font-semibold tabular-nums text-muted-foreground/20 transition-colors duration-300 select-none group-hover/card:text-muted-foreground/35">
+            <span className="font-heading text-3xl font-semibold tabular-nums text-muted-foreground/45 transition-colors duration-300 select-none group-hover/card:text-muted-foreground/70 dark:text-muted-foreground/20 dark:group-hover/card:text-muted-foreground/35">
               {n}
             </span>
           </div>
@@ -127,7 +127,7 @@ function ProjectCard({
             <h3 className="font-heading text-xl font-semibold tracking-tight text-foreground">
               {title}
             </h3>
-            <p className="text-sm leading-relaxed text-muted-foreground/75">{description}</p>
+            <p className="text-sm leading-relaxed text-muted-foreground">{description}</p>
           </div>
 
           <motion.div
@@ -167,9 +167,9 @@ export function ProjectSection({ id }: { id?: string }) {
 
       <div className="relative z-10 mx-auto max-w-7xl px-4">
         <SectionHeader
-          badge="Latest Work & Experiments"
+          badge="Professional Experience"
           title="What I've Developed & Shipped"
-          description="A curated portfolio of software engineering projects, production apps, and robust systems I've delivered over the past 2+ years."
+          description="Highlights from Transient AI, Stelvio, and Empty Truck — plus freelancing work on component libraries, Chrome extensions, and Zoom-integrated meeting apps."
         />
 
         <motion.div

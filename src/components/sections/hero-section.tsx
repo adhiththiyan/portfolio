@@ -6,11 +6,12 @@ import { Button } from "@/components/ui/button";
 import React, { useState, useEffect } from "react";
 
 const heroContent = {
-  badge: "Hi, I'm Adhithiya S.",
-  headingFirstPart: "Design the Future with ",
+  badge: "Hi, I'm Adhithiyan S.",
+  headingFirstPart: "Responsive Web Apps with ",
   headingGradientPart: "Precision & Speed",
-  description: "Ai Automation and Web development using latest technology",
-  ctaText: "Contact Me"
+  description:
+    "Software Engineer with 2+ years shipping React.js and Next.js interfaces — clean architecture, Azure AD auth, RBAC, real-time data, and polished UX across devices.",
+  ctaText: "Contact Me",
 };
 
 export const HeroSection = ({ id }: { id?: string }) => {
