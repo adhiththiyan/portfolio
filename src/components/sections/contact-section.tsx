@@ -23,20 +23,20 @@ const contactContent = {
 const contactLinks = [
   {
     label: "GitHub",
-    value: "github.com/yourhandle",
-    href: "https://github.com/yourhandle",
+    value: "github.com/adhiththiyan",
+    href: "https://github.com/adhiththiyan",
     icon: <Mail size={20} />,
   },
   {
     label: "LinkedIn",
-    value: "linkedin.com/in/yourhandle",
-    href: "https://linkedin.com/in/yourhandle",
+    value: "linkedin.com/in/adhithiyan-s-735851267",
+    href: "https://www.linkedin.com/in/adhithiyan-s-735851267",
     icon: <Mail size={20} />,
   },
   {
     label: "Email",
-    value: "your@email.com",
-    href: "mailto:your@email.com",
+    value: "adhithiyan.sg@gmail.com",
+    href: "mailto:adhithiyan.sg@gmail.com",
     icon: <Mail size={20} />,
   },
 ];

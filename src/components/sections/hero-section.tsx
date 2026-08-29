@@ -1,197 +1,135 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowRightIcon, CheckIcon, ChevronDown, MessageCircleIcon } from "lucide-react";
+import { ArrowRight, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import React, { useState, useEffect } from "react";
-
-const heroContent = {
-  badge: "Hi, I'm Adhithiyan S.",
-  headingFirstPart: "Responsive Web Apps with ",
-  headingGradientPart: "Precision & Speed",
-  description:
-    "Software Engineer with 2+ years shipping React.js and Next.js interfaces — clean architecture, Azure AD auth, RBAC, real-time data, and polished UX across devices.",
-  ctaText: "Contact Me",
-};
+import { HERO } from "@/data/portfolio";
 
 export const HeroSection = ({ id }: { id?: string }) => {
   const [displayedText, setDisplayedText] = useState("");
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    let isDeleting = false;
-    let i = 0;
-    const typingSpeed = 120;
-    let timerId: NodeJS.Timeout;
-
-    const type = () => {
-      const fullText = heroContent.badge;
-      if (!isDeleting) {
-        setDisplayedText(fullText.slice(0, i + 1));
-        i++;
-        if (i === fullText.length) {
-          isDeleting = true;
-          timerId = setTimeout(type, 2000);
-          return;
-        }
+    const fullText = HERO.roles[roleIndex];
+    let timer: NodeJS.Timeout;
+    if (!isDeleting) {
+      if (displayedText.length < fullText.length) {
+        timer = setTimeout(() => setDisplayedText(fullText.slice(0, displayedText.length + 1)), 80);
       } else {
-        setDisplayedText(fullText.slice(0, i - 1));
-        i--;
-        if (i === 0) {
-          isDeleting = false;
-          timerId = setTimeout(type, 500);
-          return;
-        }
+        timer = setTimeout(() => setIsDeleting(true), 2200);
       }
-      timerId = setTimeout(type, isDeleting ? 60 : typingSpeed);
-    };
-
-    timerId = setTimeout(type, typingSpeed);
-    return () => clearTimeout(timerId);
-  }, []);
-
+    } else {
+      if (displayedText.length > 0) {
+        timer = setTimeout(() => setDisplayedText(fullText.slice(0, displayedText.length - 1)), 40);
+      } else {
+        setIsDeleting(false);
+        setRoleIndex((p) => (p + 1) % HERO.roles.length);
+      }
+    }
+    return () => clearTimeout(timer);
+  }, [displayedText, isDeleting, roleIndex]);
 
   return (
-    <section id={id} className="min-h-screen relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-20 z-0 bg-background"
-        style={{ filter: "grayscale(100%) contrast(1.1) brightness(0.8)" }}
-      >
+    <section id={id} className="min-h-screen relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden flex items-center">
+      <video autoPlay muted loop playsInline
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-10 z-0"
+        style={{ filter: "grayscale(100%) contrast(1.1) brightness(0.6)" }}>
         <source src="/videos/background.mp4" type="video/mp4" />
       </video>
-      <div className="glow-bottom"></div>
 
-      <div className="max-w-7xl mx-auto px-4 relative z-10 flex items-center justify-center">
-          <div className="space-y-8 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-lg text-muted-foreground mb-4 min-h-[36px]">
-                <span className="animate-pulse rounded-full h-2 w-2 bg-primary mr-5 shadow-[0 0 20px 5px #2563eb]"></span>
-                <span className="font-mono">
-                  {displayedText}
-                  <span className="animate-pulse font-sans">|</span>
-                </span>
-              </span>
-            </motion.div> 
+      <div className="max-w-5xl mx-auto px-6 relative z-10 w-full">
+        <div className="space-y-8 text-center">
 
-            <motion.h1
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              className="text-4xl md:text-5xl lg:text-8xl tracking-tight text-foreground leading-tight font-heading"
-            >
-              {heroContent.headingFirstPart} <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-muted-foreground">
-                {heroContent.headingGradientPart}
-              </span>
-            </motion.h1>
+          {/* Typing role */}
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <span className="inline-flex items-center gap-3 text-sm text-muted-foreground font-mono min-h-[24px]">
+              <span className="h-1.5 w-1.5 rounded-full bg-foreground/60 animate-pulse shrink-0" />
+              {displayedText}
+              <span className="animate-pulse text-foreground/40">|</span>
+            </span>
+          </motion.div>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-lg text-muted-foreground max-w-lg mx-auto leading-relaxed text-center"
-            >
-              {heroContent.description}
-            </motion.p>
+          {/* Main heading */}
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-5xl md:text-7xl lg:text-8xl font-heading text-foreground leading-[1.08] tracking-tight"
+          >
+            {HERO.headline.split("\n").map((line, i) => (
+              <span key={i}>{line}{i < HERO.headline.split("\n").length - 1 && <br />}</span>
+            ))}
+          </motion.h1>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4"
-            >
-              <Button
-              variant="default"
-              size="lg"
-              className="py-6 px-8"
-              >
-                {heroContent.ctaText}
-                <ArrowRightIcon className="ml-2 w-4 h-4" />
-              </Button>
-            </motion.div>
+          {/* Bio */}
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="text-base text-muted-foreground max-w-xl mx-auto leading-relaxed"
+          >
+            {HERO.bio}
+          </motion.p>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="pt-4 flex items-center justify-center gap-4 text-sm text-muted-foreground"
-            >
-                <Button variant="outline" size="icon" className="rounded-full" asChild>
-                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="w-10 h-10"
-                    >
-                      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                      <rect width="4" height="12" x="2" y="9" />
-                      <circle cx="4" cy="4" r="2" />
-                    </svg>
-                  </a>
-                </Button>
-                <div className="border border-accent-foreground h-6 rounded-full"></div>
-                <Button variant="outline" size="icon" className="rounded-full" asChild>
-                  <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="w-10 h-10"
-                    >
-                      <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.28 1.15-.28 2.35 0 3.5-.73 1.02-1.08 2.25-1 3.5 0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-                      <path d="M9 18c-4.51 2-5-2-7-2" />
-                    </svg>
-                  </a>
-                </Button>
-                <div className="border border-accent-foreground h-6 rounded-full"></div>
-                <Button variant="outline" size="icon" className="rounded-full" asChild>
-                  <a href="https://wa.me" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-                    <MessageCircleIcon className="w-5 h-5" />
-                  </a>
-                </Button>
-            </motion.div>
+          {/* CTAs */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-3"
+          >
+            <Button size="lg" className="px-8 py-6 text-sm tracking-wide"
+              onClick={() => document.getElementById("experience")?.scrollIntoView({ behavior: "smooth" })}>
+              {HERO.cta.primary} <ArrowRight className="ml-2 w-4 h-4" />
+            </Button>
+            <Button variant="outline" size="lg" className="px-8 py-6 text-sm tracking-wide"
+              onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}>
+              {HERO.cta.secondary}
+            </Button>
+          </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-            >
-                <motion.button
-                    className="cursor-pointer mt-24"
-                    animate={{ y: [0, 10, 0] }}
-                    transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                    }}
-                    onClick={() => {
-                        const hero = document.getElementById(id ?? "home");
-                        const next = hero?.nextElementSibling as HTMLElement | null;
-                        next?.scrollIntoView({ behavior: "smooth", block: "start" });
-                    }}
-                >
-                    <ChevronDown className="w-10 h-10 text-accent-foreground" />
-                </motion.button>
-            </motion.div>
-          </div>
+          {/* Social links */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.45 }}
+            className="flex items-center justify-center gap-4"
+          >
+            <a href={HERO.links.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"
+              className="text-muted-foreground hover:text-foreground transition-colors duration-200">
+              <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+              </svg>
+            </a>
+            <span className="w-px h-4 bg-border" />
+            <a href={HERO.links.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub"
+              className="text-muted-foreground hover:text-foreground transition-colors duration-200">
+              <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z" />
+              </svg>
+            </a>
+            <span className="w-px h-4 bg-border" />
+            <a href={HERO.links.email} aria-label="Email"
+              className="text-muted-foreground hover:text-foreground transition-colors duration-200">
+              <Mail className="w-5 h-5" />
+            </a>
+          </motion.div>
+
+          {/* Scroll cue */}
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="pt-12 flex justify-center"
+          >
+            <div className="w-6 h-10 rounded-full border border-border/60 flex items-start justify-center pt-2">
+              <div className="w-1 h-2 rounded-full bg-muted-foreground/50" />
+            </div>
+          </motion.div>
+
+        </div>
       </div>
     </section>
   );
 };
-

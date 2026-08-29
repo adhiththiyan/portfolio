@@ -1,17 +1,10 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
-import {
-  Boxes,
-  Layers2,
-  Server,
-  type LucideIcon,
-} from "lucide-react";
+import { useRef } from "react";
+import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { Boxes, Layers2, Server, ShieldCheck, type LucideIcon } from "lucide-react";
 import { SectionHeader } from "@/components/ui";
-import {
-  AccentTag,
-  chipRowVariants,
-} from "@/components/sections/accent-tag";
+import { AccentTag, chipRowVariants } from "@/components/sections/accent-tag";
 import { SECTION_ACCENTS, type AccentKey } from "@/components/sections/section-accents";
 
 const tools: {
@@ -22,187 +15,178 @@ const tools: {
   items: { name: string }[];
 }[] = [
   {
-    category: "Languages",
+    category: "Frontend Development",
     accent: "blue",
-    blurb: "Core web standards and typed JavaScript.",
+    blurb: "Cross-platform UI frameworks and component-driven architecture.",
     icon: Layers2,
     items: [
-      { name: "HTML5" },
-      { name: "CSS3" },
-      { name: "JavaScript (ES6+)" },
-      { name: "TypeScript" },
-    ],
-  },
-  {
-    category: "Frameworks & UI",
-    accent: "emerald",
-    blurb: "Apps, components, and design systems.",
-    icon: Layers2,
-    items: [
-      { name: "React.js" },
-      { name: "Next.js" },
-      { name: "Angular" },
-      { name: "Tailwind CSS" },
-      { name: "Bootstrap" },
-      { name: "Radix UI" },
-      { name: "Material UI" },
-      { name: "Hero UI" },
+      { name: "Next.js" }, { name: "React.js" }, { name: "React Native" },
+      { name: "TypeScript" }, { name: "JavaScript (ES6+)" }, { name: "Tailwind CSS" },
     ],
   },
   {
     category: "Backend & APIs",
-    accent: "orange",
-    blurb: "Client–server apps and integrations.",
+    accent: "emerald",
+    blurb: "Server-side logic, database design, and real-time integrations.",
     icon: Server,
     items: [
-      { name: "FastAPI" },
-      { name: "Node.js" },
-      { name: "REST APIs" },
-      { name: "Azure AD / OAuth" },
-      { name: "Third-party APIs" },
+      { name: "FastAPI" }, { name: "Python" }, { name: "PostgreSQL" },
+      { name: "RESTful API Design" }, { name: "Server-Sent Events (SSE)" }, { name: "SQL" },
     ],
   },
   {
-    category: "Tools & Delivery",
+    category: "Auth, Cloud & DevOps",
+    accent: "orange",
+    blurb: "Secure auth systems, cloud deployments, and CI/CD pipelines.",
+    icon: ShieldCheck,
+    items: [
+      { name: "Firebase Auth" }, { name: "Firebase Analytics" },
+      { name: "RBAC" }, { name: "Docker" }, { name: "CI/CD Workflows" },
+    ],
+  },
+  {
+    category: "Tools & Workflow",
     accent: "purple",
-    blurb: "IDEs, collaboration, and version control.",
+    blurb: "State management, version control, and developer tooling.",
     icon: Boxes,
     items: [
-      { name: "VS Code" },
-      { name: "Git" },
-      { name: "GitHub" },
-      { name: "Bitbucket" },
-      { name: "Postman" },
-      { name: "Jira" },
-      { name: "Linear" },
+      { name: "TanStack Query" }, { name: "Git" }, { name: "GitHub" },
+      { name: "Postman" }, { name: "VS Code" }, { name: "Storybook" },
     ],
   },
 ];
 
-const ease = [0.25, 0.1, 0.25, 1] as const;
-
-const gridVariants: Variants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.12 },
-  },
-};
-
-const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 36 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.55, ease },
-  },
-};
-
-function TechCategoryCard({
-  category,
-  accent,
-  blurb,
-  icon: Icon,
-  items,
+/* ─── Individual stacking card ─────────────────────────────────────────── */
+function StackCard({
+  tool,
   index,
+  total,
+  containerScrollYProgress,
 }: {
-  category: string;
-  accent: AccentKey;
-  blurb: string;
-  icon: LucideIcon;
-  items: { name: string }[];
+  tool: (typeof tools)[number];
   index: number;
+  total: number;
+  containerScrollYProgress: MotionValue<number>;
 }) {
-  const a = SECTION_ACCENTS[accent];
+  const a = SECTION_ACCENTS[tool.accent];
+  const Icon = tool.icon;
   const n = String(index + 1).padStart(2, "0");
+
+  const step = 1 / total;
+
+  // Scale: reduces as subsequent cards stack on top
+  const scaleFrom = index * step;
+  const scaleTo = Math.min((index + 1) * step, 1);
+  const finalScale = 1 - (total - 1 - index) * 0.05;
+
+  const scale = useTransform(
+    containerScrollYProgress,
+    [scaleFrom, scaleTo],
+    [1, index === total - 1 ? 1 : finalScale]
+  );
+
+  // Y: each card (except first) slides in from below
+  const yStart = Math.max((index - 1) * step, 0);
+  const yEnd = index * step;
+  const y = useTransform(
+    containerScrollYProgress,
+    index === 0 ? [0, 0.001] : [yStart, yEnd],
+    index === 0 ? ["0%", "0%"] : ["110%", "0%"]
+  );
 
   return (
     <motion.div
-      variants={cardVariants}
-      className="group/card relative flex flex-col overflow-hidden rounded-2xl border border-border/80 bg-card/35 backdrop-blur-md transition-all duration-500 hover:border-primary/20 hover:shadow-[0_24px_48px_-28px_rgba(0,0,0,0.85)] hover:shadow-primary/[0.03]"
+      style={{ scale, y, zIndex: index + 1, top: `${index * 16}px` }}
+      className="absolute inset-x-0 mx-auto max-w-3xl"
     >
-      <div
-        className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${a.mesh} opacity-90 transition-opacity duration-500 group-hover/card:opacity-100`}
-      />
-      <div
-        className={`pointer-events-none absolute -right-8 -top-8 h-44 w-44 rounded-full ${a.glow} blur-[72px] opacity-70 transition-opacity duration-500 group-hover/card:opacity-100`}
-      />
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-border/60 to-transparent"
-        aria-hidden
-      />
+      <div className="group/card relative overflow-hidden rounded-2xl border border-border/80 bg-card/60 backdrop-blur-md shadow-2xl">
+        {/* Gradient mesh */}
+        <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${a.mesh} opacity-80`} />
+        {/* Corner glow */}
+        <div className={`pointer-events-none absolute -right-10 -top-10 h-52 w-52 rounded-full ${a.glow} blur-[80px] opacity-60`} />
+        {/* Bottom shimmer */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-border/60 to-transparent" />
 
-      <div className="relative z-10 flex flex-1 flex-col p-7 lg:p-8">
-        <div className="mb-6 flex items-start justify-between gap-4">
-          <div
-            className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border ${a.iconRing}`}
-          >
-            <Icon className="h-5 w-5" strokeWidth={1.65} aria-hidden />
+        <div className="relative z-10 p-8 lg:p-10">
+          {/* Header row */}
+          <div className="flex items-start justify-between gap-4 mb-6">
+            <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border ${a.iconRing}`}>
+              <Icon className="h-5 w-5" strokeWidth={1.65} />
+            </div>
+            <span className="font-heading text-4xl font-semibold tabular-nums text-muted-foreground/25 select-none">
+              {n}
+            </span>
           </div>
-          <span className="font-heading text-3xl font-semibold tabular-nums text-muted-foreground/45 transition-colors duration-300 select-none group-hover/card:text-muted-foreground/70 dark:text-muted-foreground/20 dark:group-hover/card:text-muted-foreground/35">
-            {n}
-          </span>
-        </div>
 
-        <div className="mb-5 space-y-2">
-          <p className={`text-[11px] font-bold uppercase tracking-[0.22em] ${a.label}`}>
-            {category}
-          </p>
-          <div className={`h-px w-12 rounded-full bg-gradient-to-r ${a.bar}`} aria-hidden />
-          <h3 className="font-heading text-xl font-semibold tracking-tight text-foreground">
-            {category}
-          </h3>
-          <p className="text-sm leading-relaxed text-muted-foreground">{blurb}</p>
-        </div>
+          {/* Text */}
+          <div className="mb-6 space-y-2">
+            <p className={`text-[11px] font-bold uppercase tracking-[0.22em] ${a.label}`}>{tool.category}</p>
+            <div className={`h-px w-12 rounded-full bg-gradient-to-r ${a.bar}`} aria-hidden />
+            <h3 className="font-heading text-2xl font-semibold tracking-tight text-foreground">{tool.category}</h3>
+            <p className="text-sm leading-relaxed text-muted-foreground">{tool.blurb}</p>
+          </div>
 
-        <motion.div
-          variants={chipRowVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="relative mt-auto flex flex-wrap gap-2"
-        >
-          {items.map((item) => (
-            <AccentTag key={item.name} name={item.name} accent={accent} />
-          ))}
-        </motion.div>
+          {/* Skill chips */}
+          <motion.div
+            variants={chipRowVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="flex flex-wrap gap-2"
+          >
+            {tool.items.map((item) => (
+              <AccentTag key={item.name} name={item.name} accent={tool.accent} />
+            ))}
+          </motion.div>
+        </div>
       </div>
     </motion.div>
   );
 }
 
+/* ─── Section ───────────────────────────────────────────────────────────── */
 export function TechStackSection({ id }: { id?: string }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+
+  const total = tools.length;
+
   return (
     <section
       id={id}
-      className="relative scroll-mt-24 overflow-hidden border-t border-border bg-background py-24 md:py-32"
+      ref={containerRef}
+      className="relative border-t border-border bg-background"
+      style={{ height: `${(total + 1) * 100}vh` }}
     >
       <div className="glow-bottom" />
-      <div className="relative z-10 mx-auto max-w-7xl px-4">
-        <SectionHeader
-          badge="My Arsenal"
-          title="Tools & Technologies I Work With"
-          description="Languages, UI frameworks, backend collaboration, and delivery tools I use to ship responsive, maintainable web applications."
-        />
 
-        <motion.div
-          variants={gridVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-7"
-        >
-          {tools.map((group, index) => (
-            <TechCategoryCard
-              key={group.category}
-              category={group.category}
-              accent={group.accent}
-              blurb={group.blurb}
-              icon={group.icon}
-              items={group.items}
+      {/* Sticky viewport */}
+      <div className="sticky top-0 h-screen flex flex-col overflow-hidden">
+        {/* Section header */}
+        <div className="relative z-10 pt-20 pb-8 text-center px-4">
+          <SectionHeader
+            badge="My Arsenal"
+            title="Tools & Technologies I Work With"
+            description="The languages, frameworks, and tools I use to architect scalable full-stack web and mobile applications."
+          />
+        </div>
+
+        {/* Stacking cards arena */}
+        <div className="relative flex-1 mx-auto w-full max-w-3xl px-4">
+          {tools.map((tool, index) => (
+            <StackCard
+              key={tool.category}
+              tool={tool}
               index={index}
+              total={total}
+              containerScrollYProgress={scrollYProgress}
             />
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
