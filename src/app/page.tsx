@@ -1,21 +1,21 @@
 import { Navigation, Footer } from "@/components/layout";
 import type { NavLink } from "@/components/layout/navigation";
-import { HeroSection, ProjectSection, TechStackSection, AboutSection, ContactSection } from "@/components/sections";
+import { HeroSection, AboutSection, ExperienceSection, ProjectSection, ServicesSection } from "@/components/sections";
 
 const SECTION_IDS = {
-  home: "home",
-  projects: "projects",
-  techStack: "tech-stack",
-  about: "about",
-  contact: "contact",
+  home:       "home",
+  about:      "about",
+  experience: "experience",
+  projects:   "projects",
+  services:   "services",
 } as const;
 
 const navLinks: NavLink[] = [
   { name: "Home",       href: `#${SECTION_IDS.home}` },
-  { name: "Projects",   href: `#${SECTION_IDS.projects}` },
-  { name: "Tech Stack", href: `#${SECTION_IDS.techStack}` },
   { name: "About",      href: `#${SECTION_IDS.about}` },
-  { name: "Contact",    href: `#${SECTION_IDS.contact}` },
+  { name: "Experience", href: `#${SECTION_IDS.experience}` },
+  { name: "Projects",   href: `#${SECTION_IDS.projects}` },
+  { name: "Services",   href: `#${SECTION_IDS.services}` },
 ];
 
 export default function Home() {
@@ -23,11 +23,11 @@ export default function Home() {
     <div className="min-h-screen flex flex-col font-sans selection:bg-primary/30">
       <Navigation navLinks={navLinks} />
       <main className="grow">
-        <HeroSection    id={SECTION_IDS.home} />
-        <ProjectSection id={SECTION_IDS.projects} />
-        <TechStackSection id={SECTION_IDS.techStack} />
-        <AboutSection   id={SECTION_IDS.about} />
-        <ContactSection id={SECTION_IDS.contact} />
+        <HeroSection       id={SECTION_IDS.home} />
+        <AboutSection      id={SECTION_IDS.about} />
+        <ExperienceSection id={SECTION_IDS.experience} />
+        <ProjectSection    id={SECTION_IDS.projects} />
+        <ServicesSection   id={SECTION_IDS.services} />
       </main>
       <Footer />
     </div>

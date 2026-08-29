@@ -36,7 +36,7 @@ export const Navigation = ({ navLinks }: { navLinks: NavLink[] }) => {
         });
 
         return () => observers.forEach((o) => o.disconnect());
-    }, []);
+    }, [navLinks]);
 
     React.useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -61,13 +61,13 @@ export const Navigation = ({ navLinks }: { navLinks: NavLink[] }) => {
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
-                    <div className="shrink-0 cursor-pointer">
+                    <div className="shrink-0 cursor-pointer" onClick={(e) => handleNavClick(e as any, '#home')}>
                         <motion.div
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
-                            className="text-xl font-bold tracking-tight text-primary flex items-center gap-2"
+                            className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2 font-heading"
                         >
-                            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground">
+                            <div className="w-8 h-8 bg-foreground rounded-lg flex items-center justify-center text-background">
                                 <span className="font-serif text-sm font-semibold">AS</span>
                             </div>
                             Adhithiyan S
@@ -85,34 +85,26 @@ export const Navigation = ({ navLinks }: { navLinks: NavLink[] }) => {
                             {navLinks.map((link) => {
                                 const isActive = activeSection === link.href.replace('#', '');
                                 return (
-                                    <li key={link.name}>
+                                    <li key={link.name} className="relative">
+                                        {/* Sliding active pill background */}
+                                        {isActive && (
+                                            <motion.span
+                                                layoutId="nav-active-pill"
+                                                className="absolute inset-0 rounded-full bg-foreground/10 ring-1 ring-border shadow-sm"
+                                                transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                                            />
+                                        )}
                                         <motion.a
                                             href={link.href}
                                             onClick={(e) => handleNavClick(e, link.href)}
-                                            className={`text-sm font-medium relative group transition-colors ${isActive
-                                                ? 'text-foreground'
+                                            className={`relative z-10 inline-block text-sm font-medium px-4 py-1.5 rounded-full transition-colors ${isActive
+                                                ? 'text-foreground font-semibold'
                                                 : 'text-muted-foreground hover:text-foreground'
                                                 }`}
-                                            whileHover={{ y: -1 }}
+                                            whileHover={{ scale: isActive ? 1 : 1.04 }}
+                                            transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                                         >
                                             {link.name}
-                                            {/* Active indicator dot */}
-                                            <AnimatePresence>
-                                                {isActive && (
-                                                    <motion.span
-                                                        layoutId="nav-active-dot"
-                                                        className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary shadow-[0_0_6px_2px_hsl(var(--primary)/0.6)]"
-                                                        initial={{ opacity: 0, scale: 0 }}
-                                                        animate={{ opacity: 1, scale: 1 }}
-                                                        exit={{ opacity: 0, scale: 0 }}
-                                                        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                                                    />
-                                                )}
-                                            </AnimatePresence>
-                                            {/* Hover underline (non-active) */}
-                                            {!isActive && (
-                                                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full" />
-                                            )}
                                         </motion.a>
                                     </li>
                                 );
@@ -129,12 +121,12 @@ export const Navigation = ({ navLinks }: { navLinks: NavLink[] }) => {
                         <Button
                             variant="default"
                             size="lg"
-                            className="py-6 px-8 text-base"
+                            className="py-5 px-6 text-sm tracking-wide rounded-full"
                             onClick={() => {
                                 document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                             }}
                         >
-                            Get Started
+                            Contact Me
                         </Button>
                     </motion.div>
 
@@ -160,7 +152,7 @@ export const Navigation = ({ navLinks }: { navLinks: NavLink[] }) => {
                         exit={{ opacity: 0, height: 0 }}
                         className="md:hidden bg-background border-b border-border overflow-hidden"
                     >
-                        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                        <div className="px-4 py-4 space-y-2">
                             {navLinks.map((link, index) => {
                                 const isActive = activeSection === link.href.replace('#', '');
                                 return (
@@ -171,14 +163,11 @@ export const Navigation = ({ navLinks }: { navLinks: NavLink[] }) => {
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ delay: index * 0.05 }}
                                         onClick={(e) => handleNavClick(e, link.href)}
-                                        className={`flex items-center gap-2 px-3 py-2 rounded-md text-base font-medium transition-colors ${isActive
-                                            ? 'text-foreground bg-primary/10'
+                                        className={`flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${isActive
+                                            ? 'text-background bg-foreground'
                                             : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
                                             }`}
                                     >
-                                        {isActive && (
-                                            <span className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_6px_2px_hsl(var(--primary)/0.5)] shrink-0" />
-                                        )}
                                         {link.name}
                                     </motion.a>
                                 );
@@ -186,14 +175,14 @@ export const Navigation = ({ navLinks }: { navLinks: NavLink[] }) => {
                             <MotionButton
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
-                                className="w-full mt-4"
+                                className="w-full mt-4 py-6"
                                 size="default"
                                 onClick={() => {
                                     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                                     setIsOpen(false);
                                 }}
                             >
-                                Get Started
+                                Contact Me
                             </MotionButton>
                         </div>
                     </motion.div>

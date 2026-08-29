@@ -1,118 +1,119 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Card, SectionHeader } from "@/components/ui";
-import { Code2, Layers, Rocket, Users } from "lucide-react";
+import { ABOUT } from "@/data/portfolio";
 
-const aboutContent = {
-  badge: "About Me",
-  heading: "Turning Ideas Into Working Software",
-  bio: "I'm Adhithiyan S, a Software Engineer with 2+ years building responsive, user-centric web applications using React.js and Next.js, with foundational knowledge of Angular.",
-  bioSecondary:
-    "I'm fluent in HTML5, CSS3, and JavaScript (ES6+), work daily with Tailwind CSS, Radix UI, Material UI, and Hero UI, and partner closely with FastAPI and Node.js backends. I use Jira and Linear for agile delivery and focus on performance and UX across browsers and devices.",
-};
-
-const stats = [
-  { value: "2+", label: "Years Experience" },
-  { value: "10+", label: "Major Deliverables" },
-  { value: "4", label: "Teams & Clients" },
-  { value: "∞", label: "Lines of Code" },
-];
-
-const highlights = [
-  {
-    icon: <Code2 size={20} />,
-    title: "Clean Code First",
-    description:
-      "Maintainable components, clear patterns, and structured front-end architecture — not just code that works once.",
-  },
-  {
-    icon: <Layers size={20} />,
-    title: "UI Meets APIs",
-    description:
-      "Comfortable owning the client layer end-to-end and integrating REST APIs with FastAPI or Node.js backends.",
-  },
-  {
-    icon: <Rocket size={20} />,
-    title: "Ship Fast, Iterate",
-    description:
-      "I believe in launching early, gathering feedback, and improving continuously.",
-  },
-  {
-    icon: <Users size={20} />,
-    title: "Collaboration Driven",
-    description:
-      "I thrive in team environments and enjoy turning complex requirements into clear solutions.",
-  },
-];
+function SkillBar({ name, level, index }: { name: string; level: number; index: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4, delay: index * 0.05 }}
+      className="space-y-1.5"
+    >
+      <span className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+        {name}
+      </span>
+      <div className="h-px w-full bg-border">
+        <motion.div
+          className="h-px bg-foreground"
+          initial={{ width: 0 }}
+          whileInView={{ width: `${level}%` }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: index * 0.05 + 0.15, ease: "easeOut" }}
+        />
+      </div>
+    </motion.div>
+  );
+}
 
 export function AboutSection({ id }: { id?: string }) {
   return (
-    <section id={id} className="py-24 md:py-32 relative bg-background border-t border-border overflow-hidden">
-      <div className="glow-bottom" />
+    <section id={id} className="py-24 md:py-32 border-t border-border bg-background">
+      <div className="max-w-6xl mx-auto px-6">
 
-      <div className="max-w-7xl mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <div className="space-y-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="space-y-4"
-            >
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-primary/5 text-primary border border-primary/20 tracking-wider uppercase backdrop-blur-sm">
-                <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-                {aboutContent.badge}
-              </span>
+        {/* Section label */}
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4"
+        >
+          {ABOUT.badge}
+        </motion.p>
 
-              <h2 className="text-4xl md:text-5xl font-heading font-semibold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary/80 to-muted-foreground/60 leading-tight py-1">
-                {aboutContent.heading}
-              </h2>
+        <motion.h2
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.05 }}
+          className="font-heading text-4xl md:text-5xl text-foreground leading-tight mb-16"
+        >
+          {ABOUT.heading}
+        </motion.h2>
 
-              <p className="text-lg text-muted-foreground/80 leading-relaxed">
-                {aboutContent.bio}
-              </p>
-              <p className="text-muted-foreground/70 leading-relaxed">
-                {aboutContent.bioSecondary}
-              </p>
-            </motion.div>
+        <div className="grid lg:grid-cols-2 gap-16 items-start">
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.15 }}
-              className="grid grid-cols-4 gap-4 pt-4 border-t border-border"
-            >
-              {stats.map((stat) => (
-                <div key={stat.label} className="space-y-1">
-                  <p className="text-2xl font-heading font-bold text-foreground">{stat.value}</p>
-                  <p className="text-xs text-muted-foreground leading-snug">{stat.label}</p>
-                </div>
+          {/* Left — Profile */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="space-y-8"
+          >
+            <div className="space-y-2">
+              <p className="text-sm text-muted-foreground leading-relaxed">{ABOUT.bio}</p>
+              <p className="text-sm text-muted-foreground leading-relaxed">{ABOUT.bioSecondary}</p>
+            </div>
+
+            {/* Profile table */}
+            <div className="space-y-0 border-t border-border">
+              {ABOUT.profile.map((item, i) => (
+                <motion.div
+                  key={item.label}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05 }}
+                  className="flex items-start gap-6 py-3 border-b border-border"
+                >
+                  <span className="text-xs uppercase tracking-widest text-muted-foreground w-24 shrink-0 pt-0.5">
+                    {item.label}
+                  </span>
+                  <span className="text-sm text-foreground">{item.value}</span>
+                </motion.div>
               ))}
-            </motion.div>
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-8 pt-2">
+              {ABOUT.stats.map((s, i) => (
+                <motion.div
+                  key={s.label}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 }}
+                >
+                  <p className="font-heading text-3xl text-foreground">{s.value}</p>
+                  <p className="text-xs text-muted-foreground mt-1 uppercase tracking-widest">{s.label}</p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Right — Skills */}
+          <div className="space-y-6">
+            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-6">Skills</p>
+            <div className="space-y-5">
+              {ABOUT.skills.map((skill, i) => (
+                <SkillBar key={skill.name} name={skill.name} level={skill.level} index={i} />
+              ))}
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {highlights.map((item, index) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.55, delay: index * 0.1 }}
-              >
-                <Card className="p-5 group space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
-                    {item.icon}
-                  </div>
-                  <h3 className="font-heading font-semibold text-foreground">{item.title}</h3>
-                  <p className="text-sm text-muted-foreground/80 leading-relaxed">{item.description}</p>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </div>
     </section>

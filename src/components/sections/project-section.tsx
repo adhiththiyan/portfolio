@@ -1,197 +1,97 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
-import {
-  ArrowUpRight,
-  LayoutDashboard,
-  LineChart,
-  Truck,
-  type LucideIcon,
-} from "lucide-react";
-import { SectionHeader } from "@/components/ui";
-import {
-  AccentTag,
-  chipRowVariants,
-} from "@/components/sections/accent-tag";
-import { SECTION_ACCENTS, type AccentKey } from "@/components/sections/section-accents";
+import { useRef } from "react";
+import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { PROJECTS } from "@/data/portfolio";
 
-export const projects: {
-  category: string;
-  title: string;
-  description: string;
-  accent: AccentKey;
-  icon: LucideIcon;
-  tags: string[];
-}[] = [
-  {
-    category: "FinTech · Transient AI",
-    title: "Live Markets & Secure Access",
-    description:
-      "Interactive React.js and Next.js UIs with Azure AD login, RBAC, and real-time stock data from third-party APIs — integrated with FastAPI backends and shipped with Git and Linear.",
-    accent: "blue",
-    icon: LineChart,
-    tags: ["React", "Next.js", "Azure AD", "RBAC", "FastAPI"],
-  },
-  {
-    category: "Services · Stelvio",
-    title: "Service Platform & Admin",
-    description:
-      "Built a Next.js service marketplace from the ground up — routing, state, reusable components, and an admin dashboard for bookings, customers, and live service configuration with FastAPI APIs.",
-    accent: "emerald",
-    icon: LayoutDashboard,
-    tags: ["Next.js", "Admin UI", "REST", "Bitbucket"],
-  },
-  {
-    category: "Logistics · Empty Truck",
-    title: "RBAC Dashboards & Live Tracking",
-    description:
-      "Role-based Admin and Super Admin dashboards with dynamic routing, real-time order data, and Mapbox-powered tracking maps — responsive UI, Git workflows, and Jira-backed agile delivery.",
-    accent: "purple",
-    icon: Truck,
-    tags: ["Next.js", "React", "Mapbox", "Jira"],
-  },
-];
+type Project = typeof PROJECTS.items[number];
 
-const ease = [0.25, 0.1, 0.25, 1] as const;
-
-const gridVariants: Variants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.12 },
-  },
-};
-
-const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 36 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.55, ease },
-  },
-};
-
-function ProjectCard({
-  category,
-  title,
-  description,
-  accent,
-  icon: Icon,
-  tags,
+function StackCard({
+  project,
   index,
+  total,
+  progress,
 }: {
-  category: string;
-  title: string;
-  description: string;
-  accent: AccentKey;
-  icon: LucideIcon;
-  tags: string[];
+  project: Project;
   index: number;
+  total: number;
+  progress: MotionValue<number>;
 }) {
-  const a = SECTION_ACCENTS[accent];
+  const step     = 1 / total;
+  const scaleEnd = 1 - (total - 1 - index) * 0.04;
+  const scale    = useTransform(progress, [index * step, Math.min((index + 1) * step, 1)],
+    [1, index === total - 1 ? 1 : scaleEnd]);
+  const y        = useTransform(
+    progress,
+    index === 0 ? [0, 0.001] : [Math.max((index - 1) * step, 0), index * step],
+    index === 0 ? ["0%", "0%"] : ["110%", "0%"]
+  );
+
   const n = String(index + 1).padStart(2, "0");
 
   return (
-    <motion.article
-      variants={cardVariants}
-      className="group/card relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/80 bg-card/35 backdrop-blur-md transition-all duration-500 hover:border-primary/20 hover:shadow-[0_24px_48px_-28px_rgba(0,0,0,0.85)] hover:shadow-primary/[0.03]"
+    <motion.div
+      style={{ scale, y, zIndex: index + 1, top: `${index * 12}px` }}
+      className="absolute inset-x-0 mx-auto max-w-3xl"
     >
-      <div
-        className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${a.mesh} opacity-90 transition-opacity duration-500 group-hover/card:opacity-100`}
-      />
-      <div
-        className={`pointer-events-none absolute -right-8 -top-8 h-44 w-44 rounded-full ${a.glow} blur-[72px] opacity-70 transition-opacity duration-500 group-hover/card:opacity-100`}
-      />
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-border/60 to-transparent"
-        aria-hidden
-      />
-
-      <div className="relative z-10 flex h-full flex-col p-7 lg:p-8">
-        <div className="flex flex-1 flex-col">
-          <div className="mb-6 flex items-start justify-between gap-4">
-            <div
-              className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border ${a.iconRing}`}
-            >
-              <Icon className="h-5 w-5" strokeWidth={1.65} aria-hidden />
-            </div>
-            <span className="font-heading text-3xl font-semibold tabular-nums text-muted-foreground/45 transition-colors duration-300 select-none group-hover/card:text-muted-foreground/70 dark:text-muted-foreground/20 dark:group-hover/card:text-muted-foreground/35">
-              {n}
-            </span>
+      <div className="relative rounded-3xl bg-card overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+        <div className="p-8 lg:p-10">
+          {/* Number + category */}
+          <div className="flex items-start justify-between gap-4 mb-6">
+            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{project.category}</p>
+            <span className="font-heading text-3xl text-muted-foreground/20 tabular-nums select-none">{n}</span>
           </div>
 
-          <div className="mb-5 space-y-2">
-            <p className={`text-[11px] font-bold uppercase tracking-[0.22em] ${a.label}`}>
-              {category}
-            </p>
-            <div className={`h-px w-12 rounded-full bg-gradient-to-r ${a.bar}`} aria-hidden />
-            <h3 className="font-heading text-xl font-semibold tracking-tight text-foreground">
-              {title}
-            </h3>
-            <p className="text-sm leading-relaxed text-muted-foreground">{description}</p>
-          </div>
+          {/* Title */}
+          <h3 className="font-heading text-2xl text-foreground mb-3">{project.title}</h3>
 
-          <motion.div
-            variants={chipRowVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="relative mb-6 flex flex-wrap gap-2"
-          >
-            {tags.map((tag) => (
-              <AccentTag key={tag} name={tag} accent={accent} />
+          {/* Divider */}
+          <div className="h-px w-10 bg-border mb-4" />
+
+          {/* Description */}
+          <p className="text-sm text-muted-foreground leading-relaxed mb-6">{project.description}</p>
+
+          {/* Tags */}
+          <div className="flex flex-wrap gap-2">
+            {project.tags.map((tag) => (
+              <span key={tag}
+                className="px-2.5 py-1 text-xs border border-border text-muted-foreground rounded-md">
+                {tag}
+              </span>
             ))}
-          </motion.div>
-        </div>
-
-        <div className="flex shrink-0 items-center justify-between gap-3 border-t border-border/60 pt-5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">
-            Highlight
-          </span>
-          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary opacity-90 transition-opacity group-hover/card:opacity-100">
-            <span className="hidden sm:inline">Explore</span>
-            <ArrowUpRight className="h-4 w-4 translate-y-0.5 transition-transform duration-200 group-hover/card:translate-x-0.5 group-hover/card:-translate-y-0.5" />
-          </span>
+          </div>
         </div>
       </div>
-    </motion.article>
+    </motion.div>
   );
 }
 
 export function ProjectSection({ id }: { id?: string }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] });
+  const total = PROJECTS.items.length;
+
   return (
     <section
       id={id}
-      className="relative scroll-mt-24 overflow-hidden border-t border-border bg-background py-24 md:py-32"
+      ref={containerRef}
+      className="border-t border-border bg-background"
+      style={{ height: `${(total + 1) * 100}vh` }}
     >
-      <div className="glow-bottom" />
+      <div className="sticky top-0 h-screen flex flex-col overflow-hidden">
+        {/* Header */}
+        <div className="pt-20 pb-8 px-6 max-w-6xl mx-auto w-full">
+          <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-3">{PROJECTS.badge}</p>
+          <h2 className="font-heading text-4xl md:text-5xl text-foreground leading-tight">{PROJECTS.heading}</h2>
+          <p className="text-sm text-muted-foreground mt-3 max-w-xl">{PROJECTS.description}</p>
+        </div>
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4">
-        <SectionHeader
-          badge="Professional Experience"
-          title="What I've Developed & Shipped"
-          description="Highlights from Transient AI, Stelvio, and Empty Truck — plus freelancing work on component libraries, Chrome extensions, and Zoom-integrated meeting apps."
-        />
-
-        <motion.div
-          variants={gridVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:gap-7"
-        >
-          {projects.map((project, index) => (
-            <ProjectCard
-              key={project.title}
-              category={project.category}
-              title={project.title}
-              description={project.description}
-              accent={project.accent}
-              icon={project.icon}
-              tags={project.tags}
-              index={index}
-            />
+        {/* Stacking area */}
+        <div className="relative flex-1 mx-auto w-full max-w-3xl px-6">
+          {PROJECTS.items.map((project, index) => (
+            <StackCard key={project.title} project={project} index={index} total={total} progress={scrollYProgress} />
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
