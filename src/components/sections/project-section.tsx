@@ -49,7 +49,17 @@ function StackCard({
           <div className="h-px w-10 bg-border mb-4" />
 
           {/* Description */}
-          <p className="text-sm text-muted-foreground leading-relaxed mb-6">{project.description}</p>
+          <ul className="space-y-2 mb-6">
+            {project.points.map((point, i) => (
+              <li
+                key={i}
+                className="flex items-start gap-3 text-sm text-muted-foreground leading-relaxed"
+              >
+                <span className="mt-2 w-1 h-1 rounded-full bg-muted-foreground/50 shrink-0" />
+                {point}
+              </li>
+            ))}
+          </ul>
 
           {/* Tags */}
           <div className="flex flex-wrap gap-2">

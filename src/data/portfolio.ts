@@ -12,11 +12,10 @@ export const HERO = {
   roles: [
     "Full-Stack Software Engineer",
     "React.js / Next.js Developer",
-    "React Native Developer",
     "FastAPI Backend Engineer",
   ],
-  headline: "Building Full-Stack\nWeb & Mobile Apps",
-  bio: "2+ years shipping React.js, Next.js & React Native interfaces — scalable architecture, real-time data via SSE, FastAPI backends, and polished UX across web and mobile.",
+  headline: "Building Full-Stack\nWeb Apps",
+  bio: "2+ years shipping React.js & Next.js interfaces — scalable architecture, real-time data via SSE, FastAPI backends, and polished UX across the web.",
   cta: { primary: "Contact Me", secondary: "View My Work" },
   links: {
     linkedin: "https://www.linkedin.com/in/adhithiyan-s-735851267",
@@ -51,7 +50,7 @@ export const ABOUT = {
 
   skills: [
     { name: "React.js / Next.js",      level: 92 },
-    { name: "React Native",            level: 80 },
+    { name: "React Native",            level: 60 },
     { name: "TypeScript / JavaScript", level: 88 },
     { name: "FastAPI / Python",        level: 78 },
     { name: "PostgreSQL / SQL",        level: 72 },
@@ -101,31 +100,87 @@ export const EXPERIENCE = {
 export const PROJECTS = {
   badge:       "Selected Work",
   heading:     "Projects I've Built & Shipped",
-  description: "From no-code AI agent platforms to multi-agent investment tools and cross-platform mobile apps.",
+  description: "From no-code AI agent platforms and AI-powered proposal automation to multi-agent investment tools and real-time fintech platforms.",
 
   items: [
     {
       category:    "AI Platform · ThinkLoop",
       title:       "No-Code AI Agent Platform",
-      description: "Designed and implemented the frontend architecture for a no-code AI agent platform using Next.js and React. Built real-time chatbot streaming via Server-Sent Events (SSE) and integrated external tools through MCP servers.",
+      points: [
+        "Designed and implemented the frontend architecture for a no-code AI agent platform using Next.js and React.",
+        "Built real-time chatbot streaming via Server-Sent Events (SSE).",
+        "Integrated external tools through MCP servers.",
+      ],
       tags:        ["Next.js", "React", "SSE", "MCP", "TypeScript"],
     },
     {
       category:    "Investment · Stock Analysis",
       title:       "Multi-Agent AI Investment Platform",
-      description: "Architected cross-platform Investor Desk and Signals features using React.js, Next.js, and React Native — shared stock signals, filtering, and thesis reporting across web and mobile. Implemented Firebase auth and admin approval workflows.",
+      points: [
+        "Architected cross-platform Investor Desk and Signals features using React.js, Next.js, and React Native.",
+        "Shared stock signals, filtering, and thesis reporting across web and mobile.",
+        "Implemented Firebase auth and admin approval workflows.",
+      ],
       tags:        ["React.js", "Next.js", "React Native", "Firebase", "FastAPI"],
     },
     {
       category:    "FinTech · Transient AI",
       title:       "Portfolio Management Platform",
-      description: "Developed scalable frontend features integrating real-time stock market data with interactive charts, and implemented Role-Based Access Control (RBAC) across the application.",
-      tags:        ["React.js", "Next.js", "RBAC", "Real-time", "FastAPI"],
+      points: [
+        "Designed and developed interactive, scalable user interfaces using React.js and Next.js with clean architecture and reusable components.",
+        "Integrated Microsoft Azure AD authentication for secure login and session handling.",
+        "Implemented Role-Based Access Control (RBAC) to structure user permissions.",
+        "Integrated real-time stock market data from third-party APIs to power live portfolio tracking and performance insights.",
+        "Collaborated closely with FastAPI backend engineers for seamless data exchange.",
+      ],
+      tags:        ["React.js", "Next.js", "Azure AD", "RBAC", "FastAPI"],
+    },
+    {
+      category:    "FinTech · Tickerlens",
+      title:       "Stock Market Analysis Platform",
+      points: [
+        "Developed and maintained a full-stack stock market analysis platform using Next.js, React.js, FastAPI, and PostgreSQL.",
+        "Delivered real-time market insights by integrating live data from the TrueData market data provider.",
+        "Built and enhanced RESTful APIs supporting real-time stock data processing, user management, and authentication across web, mobile, and backend services.",
+        "Worked within a monorepo architecture spanning the main web app, an internal admin portal, and shared modules for consistency across projects.",
+        "Collaborated on the React Native mobile app, integrating the same backend APIs and business logic for feature parity across platforms.",
+      ],
+      tags:        ["Next.js", "React.js", "FastAPI", "PostgreSQL", "React Native"],
+    },
+    {
+      category:    "AI Platform · Proposal Generator",
+      title:       "AI-Powered Proposal Generation Platform",
+      points: [
+        "Developed and maintained an AI-powered proposal generation platform using Next.js, TypeScript, FastAPI, and PostgreSQL.",
+        "Automated client proposal creation from RFP documents.",
+        "Built responsive, production-grade UIs for proposal creation, review, knowledge base management, and organization settings.",
+        "Integrated FastAPI backend APIs for authentication, proposal workflows, document management, AI generation, and export.",
+        "Implemented real-time generation progress via Server-Sent Events (SSE).",
+        "Contributed to an AI-powered RAG workflow spanning knowledge base retrieval, section generation, inline editing, and document export.",
+        "Built role-based functionality for organization admins and members with secure, org-level data isolation.",
+      ],
+      tags:        ["Next.js", "TypeScript", "FastAPI", "PostgreSQL", "RAG"],
+    },
+    {
+      category:    "Full-Stack · Stelvio",
+      title:       "Service Booking Platform",
+      points: [
+        "Developed a scalable, service-based web application from scratch using React.js, Next.js, FastAPI, Python, and PostgreSQL.",
+        "Enabled users to browse services and submit requests through a responsive, intuitive interface.",
+        "Designed RESTful APIs with request validation, business logic, and database integration.",
+        "Optimized PostgreSQL schemas and queries for performance and reliability.",
+        "Built a comprehensive admin portal for managing services, customers, and bookings with full CRUD functionality and RBAC.",
+        "Implemented secure authentication and reliable API communication with proper validation and error handling.",
+      ],
+      tags:        ["React.js", "Next.js", "FastAPI", "PostgreSQL", "RBAC"],
     },
     {
       category:    "Full-Stack",
       title:       "Project Management System",
-      description: "Built a full-stack project management platform — Next.js/React.js frontend and Python/FastAPI/PostgreSQL backend — with RESTful APIs, database models, authentication, and task management functionality.",
+      points: [
+        "Built a full-stack project management platform — Next.js/React.js frontend and Python/FastAPI/PostgreSQL backend.",
+        "Implemented RESTful APIs, database models, authentication, and task management functionality.",
+      ],
       tags:        ["Next.js", "FastAPI", "PostgreSQL", "Python", "REST APIs"],
     },
   ],
